@@ -10,6 +10,8 @@ dependencies:
   args: ^2.4.2
   dart_jsonwebtoken: ^2.12.1
   dotenv: ^4.2.0
+  intl: ^0.18.1
+  postgres: ^2.6.3
   shelf: ^1.4.1
   shelf_router: ^1.1.4
   supabase: ^1.11.11

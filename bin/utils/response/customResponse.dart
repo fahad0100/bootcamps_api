@@ -1,12 +1,9 @@
-
 import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
 
 customResponse(
-    {required StateResponse state,
-    required String msg,
-    Map<String, dynamic>? dataMsg}) {
+    {required StateResponse state, required String msg, dynamic dataMsg}) {
   final Map<String, dynamic> response = {"msg": msg, "date": dataMsg ?? {}};
   switch (state) {
     case StateResponse.ok:

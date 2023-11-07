@@ -3,7 +3,6 @@ import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
 import '../../env/supabase.dart';
-import '../../utils/models/RegistrationModel.dart';
 import '../../utils/response/customResponse.dart';
 import '../../utils/validator/validator_body.dart';
 
@@ -15,19 +14,18 @@ Future<Response> registrationHandler(Request req) async {
 
     validatorBody(body: body, keyBody: ['name', 'email', 'password', 'phone']);
 
-    final bodyObject = RegistrationModel.fromJS(json: body);
-    final userAuth = await supabase.auth.admin.createUser(AdminUserAttributes(
-        email: bodyObject.email, password: bodyObject.password));
-
+    final userAuth = await supabase.auth.admin.createUser(
+        AdminUserAttributes(email: body['email'], password: body['password']));
+    print("-------1-----");
     await supabase.from('users').insert({
-      'name': bodyObject.name,
+      'name': body['name'],
       'id_auth': userAuth.user!.id,
-      'email': bodyObject.email,
-      'phone': bodyObject.phone
+      'email': body['email'],
+      'phone': body['phone'],
     });
-
-    await supabase.auth.signInWithOtp(email: bodyObject.email);
-
+    print("-------2-----");
+    await supabase.auth.signInWithOtp(email: body['email']);
+    print("-------3-----");
     return customResponse(
         state: StateResponse.ok,
         msg: 'Account successfully, confirm registration',
