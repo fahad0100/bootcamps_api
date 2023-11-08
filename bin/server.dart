@@ -1,6 +1,4 @@
 import 'dart:io';
-// ignore: depend_on_referenced_packages
-import 'package:shelf_hotreload/shelf_hotreload.dart';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';

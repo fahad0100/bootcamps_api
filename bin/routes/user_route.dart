@@ -1,10 +1,10 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-import '../endponts/auth/registration_endpont.dart';
 import '../endponts/user/about/about_endpont.dart';
 import '../endponts/user/about/edit_about_endpont.dart';
 import '../endponts/user/delete_account_endpoint.dart';
-import '../endponts/user/education/add_Education_endpont.dart';
+
+import '../endponts/user/education/add_education_endpont.dart';
 import '../endponts/user/education/delete_education_endpont.dart';
 import '../endponts/user/education/get_education_endpoint.dart';
 import '../endponts/user/get_allusers_endpoint.dart';

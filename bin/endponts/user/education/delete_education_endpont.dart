@@ -53,6 +53,7 @@ Future<Response> deleteEducationMediaHandler(Request req) async {
 
     return customResponse(
       state: StateResponse.badRequest,
+      // ignore: unrelated_type_equality_checks
       msg: error.code != 23514
           ? "social should be one of this 'facebook','youtube', 'whatsapp', 'instagram', 'twitter', 'tiktok', 'telegram', 'snapchat','other'"
           : error.message,

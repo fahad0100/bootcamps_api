@@ -47,13 +47,13 @@ Future<Response> imageProfileHandler(Request request) async {
             .select<List<Map<String, dynamic>>>('id')
             .eq('id_auth', token.id))
         .first['id'];
-    String x = '';
+
     try {
-      x = await supabase.storage
+      await supabase.storage
           .from('profile')
           .update('profile/$userID.png', file);
     } catch (error) {
-      x = await supabase.storage
+      await supabase.storage
           .from('profile')
           .upload('profile/$userID.png', file);
     }
