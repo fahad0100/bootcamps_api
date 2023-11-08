@@ -2,24 +2,31 @@ import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
 import '../../../env/supabase.dart';
+
 import '../../../utils/Token/getToken.dart';
 import '../../../utils/models/TokenModel.dart';
 import '../../../utils/response/customResponse.dart';
 
-Future<Response> aboutHandler(Request req) async {
+Future<Response> getEducationMediaHandler(Request req) async {
   try {
     final supabase = SupabaseClass().supabaseGet;
 
     final TokenModel token = getToken(request: req);
-    final userData = await supabase
-        .from('users')
-        .select<List<Map<String, dynamic>>>(
-            'id, name, email, title_position, phone, location, birthday, about, image, create_at')
-        .eq('id_auth', token.id);
+    final userID = (await supabase
+            .from('users')
+            .select<List<Map<String, dynamic>>>('id')
+            .eq('id_auth', token.id))
+        .first['id'];
+
+    final data = await supabase
+        .from("education")
+        .select<List<Map<String, dynamic>>>()
+        .eq('user_id', userID);
+
     return customResponse(
       state: StateResponse.ok,
-      msg: 'successfully',
-      dataMsg: userData.first,
+      msg: 'add successfully',
+      dataMsg: data,
     );
   } on AuthException catch (error) {
     print(error);
@@ -33,11 +40,20 @@ Future<Response> aboutHandler(Request req) async {
       state: StateResponse.forbidden,
       msg: error.message,
     );
+  } on PostgrestException catch (error) {
+    print(error.code);
+
+    return customResponse(
+      state: StateResponse.badRequest,
+      msg: error.code != 23514
+          ? "social should be one of this 'facebook','youtube', 'whatsapp', 'instagram', 'twitter', 'tiktok', 'telegram', 'snapchat','other'"
+          : error.message,
+    );
   } catch (error) {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: error.toString(),
+      msg: "error",
     );
   }
 }

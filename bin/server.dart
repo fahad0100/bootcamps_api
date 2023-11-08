@@ -8,16 +8,16 @@ import 'package:shelf/shelf_io.dart';
 import 'routes/main_route.dart';
 
 void main(List<String> args) async {
-  withHotreload(
-    () async => await createServer(),
-    onReloaded: () => print('Reload!'),
-    onHotReloadNotAvailable: () => print('No hot-reload :('),
-    onHotReloadAvailable: () => print('Yay! Hot-reload :)'),
-    onHotReloadLog: (log) => print('Reload Log: ${log.message}'),
-    logLevel: Level.INFO,
-  );
+  // withHotreload(
+  //   () async => await createServer(),
+  //   onReloaded: () => print('Reload!'),
+  //   onHotReloadNotAvailable: () => print('No hot-reload :('),
+  //   onHotReloadAvailable: () => print('Yay! Hot-reload :)'),
+  //   onHotReloadLog: (log) => print('Reload Log: ${log.message}'),
+  //   logLevel: Level.INFO,
+  // );
 
-  // await createServer();
+  await createServer();
 }
 
 createServer() async {

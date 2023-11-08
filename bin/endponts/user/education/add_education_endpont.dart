@@ -1,37 +1,40 @@
 import 'dart:convert';
-
 import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
-
 import '../../../env/supabase.dart';
 import '../../../utils/Token/getToken.dart';
 import '../../../utils/models/TokenModel.dart';
 import '../../../utils/response/customResponse.dart';
 import '../../../utils/validator/validator_body.dart';
 
-Future<Response> editAboutHandler(Request req) async {
+Future<Response> addEducationMediaHandler(Request req) async {
   try {
     final supabase = SupabaseClass().supabaseGet;
+
     final body = json.decode(await req.readAsString());
     validatorBody(body: body, keyBody: [
-      'name',
-      'title_position',
-      'phone',
-      'location',
-      'birthday',
-      'about'
+      'graduation_date',
+      'university',
+      'college',
+      'specialization',
+      'level'
     ]);
+
     final TokenModel token = getToken(request: req);
-    final user = await supabase
-        .from('users')
-        .update(body)
-        .eq('id_auth', token.id)
-        .select<List<Map<String, dynamic>>>(
-            'id, name, email, title_position, phone, location, birthday, about, image, create_at');
+    final userID = (await supabase
+            .from('users')
+            .select<List<Map<String, dynamic>>>('id')
+            .eq('id_auth', token.id))
+        .first['id'];
+
+    final data = await supabase.from("education").upsert(
+        {...body, "user_id": userID}).select<List<Map<String, dynamic>>>();
+
     return customResponse(
-        state: StateResponse.ok,
-        msg: 'update data user successfully',
-        dataMsg: user.first);
+      state: StateResponse.ok,
+      msg: 'add successfully',
+      dataMsg: data.first,
+    );
   } on AuthException catch (error) {
     print(error);
     return customResponse(
@@ -44,11 +47,20 @@ Future<Response> editAboutHandler(Request req) async {
       state: StateResponse.forbidden,
       msg: error.message,
     );
+  } on PostgrestException catch (error) {
+    print(error);
+
+    return customResponse(
+      state: StateResponse.badRequest,
+      msg: error.code != 23514
+          ? "level should be one of this 'school', 'diploma', 'Bachelors', 'Master', 'Ph.D','other'"
+          : error.message,
+    );
   } catch (error) {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: 'not ',
+      msg: "error",
     );
   }
 }

@@ -1,5 +1,3 @@
-
-
 import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
@@ -19,14 +17,16 @@ Future<Response> deleteAccountHandler(Request req) async {
         .first['id'];
     await supabase.from('projects').delete().eq("user_id", userID);
     await supabase.from('skills').delete().eq("user_id", userID);
+    await supabase.from('education').delete().eq("user_id", userID);
     await supabase.from('social_media').delete().eq("user_id", userID);
     await supabase.from('users').delete().eq("id", userID);
+    await supabase.storage.from('profile').remove(['profile/$userID.png']);
     await supabase.auth.admin.deleteUser(token.id.toString());
     return customResponse(
         state: StateResponse.ok,
         msg: 'deleted successfully',
         dataMsg: {
-          "email": "user.user!.email",
+          "userID": userID,
         });
   } on AuthException catch (error) {
     print(error);

@@ -1,4 +1,3 @@
-
 import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
@@ -39,11 +38,16 @@ Future<Response> getAllUsersHandler(Request req) async {
           .from('projects')
           .select<List<Map<String, dynamic>>>()
           .eq('user_id', resulte[i]['id']));
+      final List<Map<String, dynamic>> education = (await supabase
+          .from('education')
+          .select<List<Map<String, dynamic>>>()
+          .eq('user_id', resulte[i]['id']));
       Map user = {
         ...resulte[i],
-        "socialMedia": socialMedia,
+        "education": education,
         "skills": skills,
-        "projects": projects
+        "socialMedia": socialMedia,
+        "projects": projects,
       };
       dataDisplay.add(user);
     }

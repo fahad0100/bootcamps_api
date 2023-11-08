@@ -3,6 +3,7 @@ import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
 import '../../env/supabase.dart';
+import '../../utils/models/RegistrationModel.dart';
 import '../../utils/response/customResponse.dart';
 import '../../utils/validator/validator_body.dart';
 
