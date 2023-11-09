@@ -1,5 +1,3 @@
-
-
 import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
@@ -8,7 +6,6 @@ import '../../../env/supabase.dart';
 import '../../../utils/Token/getToken.dart';
 import '../../../utils/models/TokenModel.dart';
 import '../../../utils/response/customResponse.dart';
-
 
 Future<Response> getSocialMediaHandler(Request req) async {
   try {
@@ -28,7 +25,7 @@ Future<Response> getSocialMediaHandler(Request req) async {
 
     return customResponse(
       state: StateResponse.ok,
-      msg: 'add successfully',
+      msg: 'Get successfully',
       dataMsg: data,
     );
   } on AuthException catch (error) {

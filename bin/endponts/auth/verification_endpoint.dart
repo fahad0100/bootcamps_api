@@ -23,11 +23,11 @@ Future<Response> verificationHandler(Request req) async {
       case 'rest':
         type = OtpType.recovery;
       default:
-        type = OtpType.signup;
+        throw FormatException("type should be (registration or login or rest)");
     }
 
-    final verification = await supabase.auth
-        .verifyOTP(token: body['otp'], type: type, email: body['email']);
+    final verification = await supabase.auth.verifyOTP(
+        token: body['otp'].toString(), type: type, email: body['email']);
     return customResponse(
         state: StateResponse.ok,
         msg: 'Verified successfully',
@@ -51,7 +51,7 @@ Future<Response> verificationHandler(Request req) async {
   } catch (error) {
     return customResponse(
       state: StateResponse.badRequest,
-      msg: 'not ',
+      msg: error.toString(),
     );
   }
 }

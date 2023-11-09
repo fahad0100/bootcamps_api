@@ -79,7 +79,7 @@ Future<Response> getAllUsersHandler(Request req) async {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: "error",
+      msg: error.toString(),
     );
   }
 }

@@ -15,7 +15,7 @@ Future<Response> deleteProjectHandler(Request req) async {
     final supabase = SupabaseClass().supabaseGet;
 
     final body = json.decode(await req.readAsString());
-    validatorBody(body: body, keyBody: ['id']);
+    validatorBody(body: body, keyBody: ['id_project']);
 
     final TokenModel token = getToken(request: req);
     final userID = (await supabase
@@ -27,7 +27,7 @@ Future<Response> deleteProjectHandler(Request req) async {
     await supabase
         .from("projects")
         .delete()
-        .eq('id', body['id'])
+        .eq('id', body['id_project'])
         .eq('user_id', userID)
         .select<List<Map<String, dynamic>>>();
 

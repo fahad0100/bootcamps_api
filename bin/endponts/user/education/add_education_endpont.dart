@@ -53,14 +53,14 @@ Future<Response> addEducationMediaHandler(Request req) async {
     return customResponse(
       state: StateResponse.badRequest,
       msg: error.code != 23514
-          ? "level should be one of this 'school', 'diploma', 'Bachelors', 'Master', 'Ph.D','other'"
+          ? "level should be one of this 'school, diploma, Bachelors, Master, Ph.D ,other'"
           : error.message,
     );
   } catch (error) {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: "error",
+      msg: error.toString(),
     );
   }
 }

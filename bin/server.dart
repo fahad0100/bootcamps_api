@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
+import 'package:shelf_hotreload/shelf_hotreload.dart';
 
 import 'routes/main_route.dart';
 

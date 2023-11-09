@@ -29,7 +29,7 @@ Future<Response> addProjectHandler(Request req) async {
 
     return customResponse(
       state: StateResponse.ok,
-      msg: 'add project successfully',
+      msg: 'Get project successfully',
       dataMsg: data.first,
     );
   } on AuthException catch (error) {
@@ -57,7 +57,7 @@ Future<Response> addProjectHandler(Request req) async {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: "error",
+      msg: error.toString(),
     );
   }
 }

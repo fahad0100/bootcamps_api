@@ -4,7 +4,7 @@ import 'package:shelf/shelf.dart';
 
 customResponse(
     {required StateResponse state, required String msg, dynamic dataMsg}) {
-  final Map<String, dynamic> response = {"msg": msg, "date": dataMsg ?? {}};
+  final Map<String, dynamic> response = {"msg": msg, "data": dataMsg ?? {}};
   switch (state) {
     case StateResponse.ok:
       return Response.ok(json.encode({...response, "codeState": 200}),
