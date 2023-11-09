@@ -7,8 +7,7 @@ import '../../utils/Token/getToken.dart';
 import '../../utils/models/TokenModel.dart';
 import '../../utils/response/customResponse.dart';
 
-final uploadDirectory =
-    Directory('uploads'); // Directory to store uploaded files
+// Directory to store uploaded files
 
 Future<Response> imageProfileHandler(Request request) async {
   final contentLength = int.tryParse(request.headers['content-length'] ?? '0');
@@ -16,7 +15,10 @@ Future<Response> imageProfileHandler(Request request) async {
   if (contentLength == 0) {
     return Response(HttpStatus.badRequest, body: 'No file provided');
   }
-
+  final uploadDirectory = Directory('./uploads');
+  if (!uploadDirectory.existsSync()) {
+    uploadDirectory.createSync();
+  }
   final multipart = request.read();
   final fileName =
       '${DateTime.now().millisecondsSinceEpoch}.png'; // Example: Use a timestamp as the filename
