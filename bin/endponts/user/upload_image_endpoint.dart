@@ -15,7 +15,7 @@ Future<Response> imageProfileHandler(Request request) async {
   if (contentLength == 0) {
     return Response(HttpStatus.badRequest, body: 'No file provided');
   }
-  final uploadDirectory = Directory('./uploads');
+  final uploadDirectory = Directory('uploads');
   if (!uploadDirectory.existsSync()) {
     uploadDirectory.createSync();
   }
