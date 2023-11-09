@@ -21,6 +21,7 @@ Future<Response> editAboutHandler(Request req) async {
       'birthday',
       'about'
     ]);
+
     final TokenModel token = getToken(request: req);
     final user = await supabase
         .from('users')
@@ -44,11 +45,24 @@ Future<Response> editAboutHandler(Request req) async {
       state: StateResponse.forbidden,
       msg: error.message,
     );
+  } on PostgrestException catch (error) {
+    print(error);
+    if (error.code == "22007") {
+      return customResponse(
+        state: StateResponse.badRequest,
+        msg: 'The date should be similar to this formate 02/11/2001',
+      );
+    } else {
+      return customResponse(
+        state: StateResponse.badRequest,
+        msg: error.message,
+      );
+    }
   } catch (error) {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: 'not ',
+      msg: 'The date should be similar to this wording 02/11/2001',
     );
   }
 }
