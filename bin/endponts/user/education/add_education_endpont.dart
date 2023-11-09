@@ -49,13 +49,20 @@ Future<Response> addEducationMediaHandler(Request req) async {
     );
   } on PostgrestException catch (error) {
     print(error);
-
-    return customResponse(
-      state: StateResponse.badRequest,
-      msg: error.code != 23514
-          ? "level should be one of this 'school, diploma, Bachelors, Master, Ph.D ,other'"
-          : error.message,
-    );
+    if (error.code == "22007") {
+      return customResponse(
+        state: StateResponse.badRequest,
+        msg: 'The date should be similar to this formate 02/11/2001',
+      );
+    } else if (error.code == "23514") {
+      return customResponse(
+          state: StateResponse.badRequest,
+          msg:
+              "level should be one of this 'school, diploma, Bachelors, Master, Ph.D ,other'");
+    } else {
+      return customResponse(
+          state: StateResponse.badRequest, msg: error.message);
+    }
   } catch (error) {
     print(error);
     return customResponse(
