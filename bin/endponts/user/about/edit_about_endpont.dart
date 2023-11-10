@@ -21,7 +21,12 @@ Future<Response> editAboutHandler(Request req) async {
       'birthday',
       'about'
     ]);
-
+    if (!(body['phone'] as String).startsWith("05") ||
+        ((body['phone'] as String).length < 10) ||
+        ((body['phone'] as String).length > 10)) {
+      throw FormatException(
+          "Phone number should be start 05 and has 10 digital");
+    }
     final TokenModel token = getToken(request: req);
     final user = await supabase
         .from('users')
