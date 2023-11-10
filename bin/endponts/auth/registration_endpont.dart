@@ -13,7 +13,12 @@ Future<Response> registrationHandler(Request req) async {
     final body = json.decode(await req.readAsString());
 
     validatorBody(body: body, keyBody: ['name', 'email', 'password', 'phone']);
-
+    if (!(body['phone'] as String).startsWith("05") ||
+        ((body['phone'] as String).length < 10) ||
+        ((body['phone'] as String).length > 10)) {
+      throw FormatException(
+          "Phone number should be start 05 and has 10 digital");
+    }
     final userAuth = await supabase.auth.admin.createUser(
         AdminUserAttributes(email: body['email'], password: body['password']));
     print("-------1-----");
@@ -23,7 +28,7 @@ Future<Response> registrationHandler(Request req) async {
       'email': body['email'],
       'phone': body['phone'],
     });
-    print("-------2-----");
+
     await supabase.auth.signInWithOtp(email: body['email']);
     print("-------3-----");
     return customResponse(
@@ -38,6 +43,9 @@ Future<Response> registrationHandler(Request req) async {
   } on PostgrestException catch (error) {
     print(error);
     return customResponse(state: StateResponse.forbidden, msg: error.message);
+  } on FormatException catch (error) {
+    print(error);
+    return customResponse(state: StateResponse.badRequest, msg: error.message);
   } catch (error) {
     print(error);
     return customResponse(

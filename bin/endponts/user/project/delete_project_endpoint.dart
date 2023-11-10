@@ -24,7 +24,7 @@ Future<Response> deleteProjectHandler(Request req) async {
             .eq('id_auth', token.id))
         .first['id'];
 
-    await supabase
+    final project = await supabase
         .from("projects")
         .delete()
         .eq('id', body['id_project'])
@@ -32,9 +32,9 @@ Future<Response> deleteProjectHandler(Request req) async {
         .select<List<Map<String, dynamic>>>();
 
     return customResponse(
-      state: StateResponse.ok,
-      msg: 'deleted project successfully',
-    );
+        state: StateResponse.ok,
+        msg: 'deleted project successfully',
+        dataMsg: project);
   } on AuthException catch (error) {
     print(error);
     return customResponse(
@@ -60,7 +60,7 @@ Future<Response> deleteProjectHandler(Request req) async {
     print(error);
     return customResponse(
       state: StateResponse.badRequest,
-      msg: "error",
+      msg: error.toString(),
     );
   }
 }

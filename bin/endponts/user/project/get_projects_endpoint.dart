@@ -1,4 +1,3 @@
-
 import 'package:shelf/shelf.dart';
 import 'package:supabase/supabase.dart';
 
@@ -26,7 +25,7 @@ Future<Response> getProjectHandler(Request req) async {
 
     return customResponse(
       state: StateResponse.ok,
-      msg: 'add project successfully',
+      msg: 'Get project successfully',
       dataMsg: data,
     );
   } on AuthException catch (error) {
