@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_hotreload/shelf_hotreload.dart';
+import 'package:supabase/supabase.dart';
 
+import 'env/supabase.dart';
 import 'routes/main_route.dart';
 
 void main(List<String> args) async {
@@ -15,6 +17,15 @@ void main(List<String> args) async {
   //   onHotReloadLog: (log) => print('Reload Log: ${log.message}'),
   //   logLevel: Level.INFO,
   // );
+
+  // final supabase = SupabaseClass().supabaseGet;
+
+  // List<User> users = await supabase.auth.admin.listUsers();
+  // for (var element in users) {
+  //   print("------");
+  //   print(element.id);
+  //   await supabase.auth.admin.deleteUser(element.id);
+  // }
 
   await createServer();
 }

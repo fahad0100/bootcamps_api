@@ -25,7 +25,7 @@ Future<Response> getEducationMediaHandler(Request req) async {
 
     return customResponse(
       state: StateResponse.ok,
-      msg: 'add successfully',
+      msg: 'Get successfully',
       dataMsg: data,
     );
   } on AuthException catch (error) {
