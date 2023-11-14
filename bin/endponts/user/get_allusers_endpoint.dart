@@ -21,39 +21,24 @@ Future<Response> getAllUsersHandler(Request req) async {
         .from('users')
         .select<List<Map<String, dynamic>>>()
         .neq("id", userID));
-    List dataDisplay = [];
 
-    for (var i = 0; i < resulte.length; i++) {
-      print(resulte[i]['id']);
-      final List<Map<String, dynamic>> socialMedia = (await supabase
-          .from('social_media')
-          .select<List<Map<String, dynamic>>>()
-          .eq('user_id', resulte[i]['id']));
-      final List<Map<String, dynamic>> skills = (await supabase
-          .from('skills')
-          .select<List<Map<String, dynamic>>>()
-          .eq('user_id', resulte[i]['id']));
+    final table = await supabase.from('users').select<
+            List<Map<String, dynamic>>>(
+        '*,skills!inner(*),social_media!inner(*),education!inner(*),projects!inner(*)');
+    print(table);
 
-      final List<Map<String, dynamic>> projects = (await supabase
-          .from('projects')
-          .select<List<Map<String, dynamic>>>()
-          .eq('user_id', resulte[i]['id']));
-      final List<Map<String, dynamic>> education = (await supabase
-          .from('education')
-          .select<List<Map<String, dynamic>>>()
-          .eq('user_id', resulte[i]['id']));
-      Map user = {
-        ...resulte[i],
-        "education": education,
-        "skills": skills,
-        "socialMedia": socialMedia,
-        "projects": projects,
-      };
-      dataDisplay.add(user);
-    }
+    //   Map user = {
+    //     ...resulte[i],
+    //     "education": education,
+    //     "skills": skills,
+    //     "socialMedia": socialMedia,
+    //     "projects": projects,
+    //   };
+    //   dataDisplay.add(user);
+    // }
 
     return customResponse(
-        state: StateResponse.ok, msg: 'get successfully', dataMsg: dataDisplay);
+        state: StateResponse.ok, msg: 'get successfully', dataMsg: table);
   } on AuthException catch (error) {
     print(error);
     return customResponse(
@@ -71,9 +56,7 @@ Future<Response> getAllUsersHandler(Request req) async {
 
     return customResponse(
       state: StateResponse.badRequest,
-      msg: error.code != 23514
-          ? "social should be one of this 'facebook','youtube', 'whatsapp', 'instagram', 'twitter', 'tiktok', 'telegram', 'snapchat','other'"
-          : error.message,
+      msg: error.message,
     );
   } catch (error) {
     print(error);
