@@ -49,18 +49,25 @@ Future<Response> imageProfileHandler(Request request) async {
             .select<List<Map<String, dynamic>>>('id')
             .eq('id_auth', token.id))
         .first['id'];
-
-    try {
-      await supabase.storage
-          .from('profile')
-          .update('profile/$userID.png', file);
-    } catch (error) {
-      await supabase.storage
-          .from('profile')
-          .upload('profile/$userID.png', file);
+    final list = await supabase.storage.from('profile').list(path: 'profile/');
+    bool isFound = false;
+    final nameImage = 'profile/$userID${DateTime.now()}.png';
+    for (var element in list) {
+      if (element.name.startsWith(userID.toString())) {
+        isFound = true;
+        print(element.name);
+        await supabase.storage
+            .from('profile')
+            .remove(['profile/${element.name}']);
+      }
     }
-    final url1 =
-        supabase.storage.from('profile').getPublicUrl('profile/$userID.png');
+    if (!isFound) {
+      await supabase.storage.from('profile').upload(nameImage, file);
+    } else {
+      await supabase.storage.from('profile').upload(nameImage, file);
+    }
+
+    final url1 = supabase.storage.from('profile').getPublicUrl(nameImage);
     await supabase
         .from('users')
         .update({'image': url1}).eq('id_auth', token.id);
